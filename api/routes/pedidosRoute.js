@@ -10,6 +10,4 @@ router
     .put('/pedidos/:id', PedidoController.atualizaPedido)
     .delete('/pedidos/:id', PedidoController.apagaPedido)
 
-    .get('/pedidos/:pedidoId/item/:itemId', PedidoController.pegaUmItem)
-
 module.exports = router

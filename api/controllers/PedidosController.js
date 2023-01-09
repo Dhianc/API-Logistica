@@ -1,5 +1,6 @@
 const database = require('../models')
 const Sequelize = require('sequelize')
+const { json } = require('body-parser')
 
 class PedidoController {
     static async pegaTodosOsPedidos(req, res){
@@ -19,7 +20,11 @@ class PedidoController {
                     id: Number(id) // coluna id igual id declarado acima
                 } 
             })
-            return res.status(200).json(umPedido)
+            if (umPedido != null ) {
+                return res.status(200).json(umPedido)
+            } else {
+                return res.status(400).json(`O pedido de id ${id} não existe`)
+            }
         } catch(error) {
             return res.status(500).json(error.message)
         }
@@ -52,21 +57,6 @@ class PedidoController {
         try {
             await database.Pedidos.destroy({ where: { id: Number(id) }})
             return res.status(200).json({mensagem:`id ${id} deletado`})
-        } catch(error) {
-            return res.status(500).json(error.message)
-        }
-    }
-
-    static async pegaUmItem(req, res) {
-        const { pedidoId, itemId } = req.params
-        try {                       
-            const umItem = await database.Itens.findOne({
-                where: { 
-                    id: Number(itemId), // coluna id igual id declarado acima
-                    numeroPedido: Number(pedidoId)
-                } 
-            })
-            return res.status(200).json(umItem)
         } catch(error) {
             return res.status(500).json(error.message)
         }
